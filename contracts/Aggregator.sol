@@ -92,6 +92,7 @@ contract Aggregator is Proof {
         uint256 fee = _verifierData.sizePc * aggregatorFeePerBytes;
         // Update the mappings
         balances[msg.sender] -= fee;
+        transactionIdStatus[_id] = Status.Completed;
 
         // Transfer the Ether
         (bool success, ) = msg.sender.call{value: fee}("");
@@ -101,6 +102,7 @@ contract Aggregator is Proof {
 
         // Emit the event
         emit CompleteAggregatorRequest(_id, _dealId, _cid, inclusionAuxData);
+        return inclusionAuxData;
     }
 
     /// @dev Withdraws Ether from the contract.
